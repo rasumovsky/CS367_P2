@@ -5,14 +5,16 @@ import java.util.*;
  */
 class Timeline{
 
-    private SimpleLinkedList<Tweet> list;
-
+    //private SimpleLinkedList<Tweet> tweetList;
+    private ListADT<Tweet> tweetList;
+    
     /**
      * Constructs an empty timeline
      */
-    public Timeline(){
+    public Timeline() {
+	tweetList = new SimpleLinkedList<Tweet>;
     }
-
+    
     /**
      * Adds a single tweet to the Timeline
      * 
@@ -36,20 +38,32 @@ class Timeline{
     public void remove(String user){
     }
 
+    
     /**
      * Create a new Timeline containing only the tweets containing keyword
      * 
      * @param keyword the keyword to search for
      * @return a Timeline of tweets containing keyword
      */
-    public Timeline search(String keyword){
+    public Timeline search(String keyword) {
+	Timeline newTimeline = new Timeline(); 
+	for (int i = 0; i < tweetList.size(); i++) {
+	    if (tweetList.get(i).getMessage().toLowerCase().contains(keyword.toLowerCase())) {
+		newTimeline.add(tweetList.get(i));
+	    }
+	}
+	return newTimeline;
     }
 
+    
     /**
      * Print each tweet in the timeline
      */
     public void print(){
-    }   
+	for (int i = 0; i < tweetList.size(); i++) {
+	    tweetList.get(i).print();
+	}   
+    }
     
     /**
      * Print each tweet in the timeline since time
@@ -57,6 +71,11 @@ class Timeline{
      * @param time the largest time to print tweets
      */
     public void print(int time){
+	for (int i = 0; i < tweetList.size(); i++) {
+	    if (tweetList.get(i).getTime() > time) {
+		tweetList.get(i).print();
+	    }
+	}   
     }
 }
 
