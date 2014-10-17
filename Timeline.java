@@ -5,14 +5,16 @@ import java.util.*;
  */
 class Timeline{
 
-    //private SimpleLinkedList<Tweet> tweetList;
-    private ListADT<Tweet> tweetList;
+    //private SimpleLinkedList<Tweet> tlList;
+    private ListADT<Tweet> tlList;
+    private int currPos;
     
     /**
      * Constructs an empty timeline
      */
     public Timeline() {
-	tweetList = new SimpleLinkedList<Tweet>;
+	tlList = new SimpleLinkedList<Tweet>;
+	currPos = 0;
     }
     
     /**
@@ -20,22 +22,55 @@ class Timeline{
      * 
      * @param tweet the tweet to add
      */
-    public void add(Tweet tweet){
+    public void add(Tweet tweet) {
+	
+	for (int i = 0; i < tlList.size(); i++) {
+	    if (tweet.getTime() < tlList.get(currPos).getTime()) {
+		tlList.add(tweet,i);
+		break;
+	    }
+	}
     }
-
+    
+    
     /**
      * Adds an ordered list of tweets to the Timeline
      * @param tweets the list of tweets to add
      */
-    public void add(List<Tweet> tweets){
+    public void add(List<Tweet> tweets) {
+	
+	if (tweets != null) {
+	    
+	    Iterator<Tweet> twtItr = tweets.iterator();
+	    while (twtItr.hasNext()) {
+		this.add(twtItr.next());
+	    }
+	}
     }
-
+    
+    
     /**
      * Removes all tweets by user from the Timeline
      * 
      * @param user the user whose tweets should be removed
      */
-    public void remove(String user){
+    public void remove(String user) {
+	
+	if (user != null) {
+	    int tlIndex = 0;
+	    // careful when removing to not skip over a tweet...
+	    while (tlIndex < tlList.size()) {
+	
+		if (tlList.get(tlIndex).getUser().toLowerCase().equals(user.toLowerCase())) {
+		    tlList.remove(tlIndex);
+		}
+		
+		else {
+		    tlIndex++;
+		}
+	    }
+	}
+	
     }
 
     
@@ -46,22 +81,25 @@ class Timeline{
      * @return a Timeline of tweets containing keyword
      */
     public Timeline search(String keyword) {
+	
 	Timeline newTimeline = new Timeline(); 
-	for (int i = 0; i < tweetList.size(); i++) {
-	    if (tweetList.get(i).getMessage().toLowerCase().contains(keyword.toLowerCase())) {
-		newTimeline.add(tweetList.get(i));
+	if (keyword != null) {
+	    for (int i = 0; i < tlList.size(); i++) {
+		if (tlList.get(i).getMessage().toLowerCase().contains(keyword.toLowerCase())) {
+		    newTimeline.add(tlList.get(i));
+		}
 	    }
 	}
 	return newTimeline;
     }
-
+    
     
     /**
      * Print each tweet in the timeline
      */
     public void print(){
-	for (int i = 0; i < tweetList.size(); i++) {
-	    tweetList.get(i).print();
+	for (int i = 0; i < tlList.size(); i++) {
+	    tlList.get(i).print();
 	}   
     }
     
@@ -71,9 +109,9 @@ class Timeline{
      * @param time the largest time to print tweets
      */
     public void print(int time){
-	for (int i = 0; i < tweetList.size(); i++) {
-	    if (tweetList.get(i).getTime() > time) {
-		tweetList.get(i).print();
+	for (int i = 0; i < tlList.size(); i++) {
+	    if (tlList.get(i).getTime() > time) {
+		tlList.get(i).print();
 	    }
 	}   
     }
