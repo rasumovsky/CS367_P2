@@ -1,6 +1,23 @@
 
 import java.util.*;
-public class SimpleLinkedList implements ListADT<E> {
+public class SimpleLinkedList<E> implements ListADT<E> {
+    
+    
+    // The private objects:
+    private int numItems;
+    private DblListnode<E> head;
+    private DblListnode<E> tail;// keep tail to make add() O(1)
+    
+    DblListnode<E> newDblLn;    // to create new DblListnodes
+    DblListnode<E> curr;        // for traversing chain
+    int currIndex;              // track traversing position
+    
+    // Constructor:
+    public SimpleLinkedList() {
+	head = null;
+	tail = null;
+	numItems = 0;
+    }
     
     
     /**
@@ -11,7 +28,26 @@ public class SimpleLinkedList implements ListADT<E> {
      */
     public void add(E item) {
 	
+	if (item == null) {
+	    throw new IllegalArgumentException();
+	}
+	
+	else {
+	    if (numItems == 0) {
+		head = new DblListnode<E>(item);
+		tail = head;
+	    }
+	    
+	    else {
+		tail.setNext(new DblListnode<E>(item));
+		tail.getNext().setPrev(tail);
+		tail = tail.getNext();
+	    }
+	    
+	    numItems++;
+	}
     }
+    
     
     /**
      * Adds item at position pos in the List, moving the items originally in 
@@ -24,8 +60,37 @@ public class SimpleLinkedList implements ListADT<E> {
      * than size()
      */
     public void add(int pos, E item) {
-
+	
+	if (item == null) {
+	    throw new IllegalArgumentException();
+	}
+	
+	else if (pos < 0 || pos >= numItems) {
+	    throw new IndexOutOfBoundsException();
+	}
+	
+	else {
+	    // special case of size 0:
+	    if (numItems == 0) {
+		head = new DblListnode<E>(item);
+		tail = head;
+	    }
+	    
+	    // general case:
+	    else {
+		curr = head;
+		currIndex = 0;
+		while (curr.getNext() != null && currIndex < pos) {
+		    curr = curr.getNext();
+		    currIndex++;
+		}
+		// arrived at pos. Insert new node ahead of curr (which is at pos)
+		curr.setPrev(new DblListnode<E>(item, curr.getPrev(), curr));
+	    }
+	    numItems++;
+	}
     }
+    
     
     /**
      * Returns true iff item is in the List (i.e., there is an item x in the List 
@@ -35,8 +100,16 @@ public class SimpleLinkedList implements ListADT<E> {
      * @return true if item is in the List, false otherwise
      */
     public boolean contains(E item) {
-
+	curr = head;
+	while (curr.getNext() != null) {
+	    if (curr.getData() == item) {// should this be == or .equals?
+		return true;
+	    }
+	    curr = curr.getNext();
+	}
+	return false;
     }
+    
     
     /**
      * Returns the item at position pos in the List.
@@ -47,17 +120,30 @@ public class SimpleLinkedList implements ListADT<E> {
      * or equal to size()
      */
     public E get(int pos) {
-	
-    }
 
+	if (pos < 0 || pos >= numItems) {
+	    throw new IndexOutOfBoundsException();
+	}
+	
+	curr = head;
+	currIndex = 0;
+	while (curr.getNext() != null && currIndex < pos) {
+	    curr = curr.getNext();
+	    currIndex++;
+	}
+	return curr.getData();
+    }
+    
+    
     /**
      * Returns true iff the List is empty.
      * 
      * @return true if the List is empty, false otherwise
      */
     public boolean isEmpty() {
-	
+	return (numItems == 0);
     }
+    
     
     /**
      * Removes and returns the item at position pos in the List, moving the items 
@@ -71,7 +157,23 @@ public class SimpleLinkedList implements ListADT<E> {
      */
     public E remove(int pos) {
 	
+	if (pos < 0 || pos >= numItems) {
+	    throw new IndexOutOfBoundsException();
+	}
+	
+	curr = head;
+	currIndex = 0;
+	while (curr.getNext() != null && currIndex < pos) {
+	    curr = curr.getNext();
+	    currIndex++;
+	}
+	
+	// remove current node and redo links:
+	curr.getPrev().setNext(curr.getNext());
+	curr.getNext().setPrev(curr.getPrev());
+	return curr.getData();
     }
+    
     
     /**
      * Returns the number of items in the List.
@@ -79,7 +181,7 @@ public class SimpleLinkedList implements ListADT<E> {
      * @return the number of items in the List
      */
     public int size() {
-	
+	return numItems;
     }
     
 }
