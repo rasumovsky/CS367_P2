@@ -1,3 +1,4 @@
+import java.util.*;
 /**
  * The Timeline class uses SimpleLinkedList to build a time ordered list of 
  * following tweets. Tweets with smaller Time fields should come earlier in the list.

@@ -33,20 +33,20 @@ public class SimpleLinkedList<E> implements ListADT<E> {
     
     // The private objects:
     private int numItems;
-    private DblListnode<E> head;
-    private DblListnode<E> tail;// keep tail to make add() O(1)
+    private DblListnode<E> head; //Do you want to create a header node?
+    private DblListnode<E> tail; // keep tail to make add() O(1)
     
-    DblListnode<E> newDblLn;    // to create new DblListnodes
-    DblListnode<E> curr;        // for traversing chain
-    int currIndex;              // track traversing position
+    private DblListnode<E> newDblLn;    // to create new DblListnodes
+    private DblListnode<E> curr;        // for traversing chain
+    private int currIndex;              // track traversing position //Do we need this?
     
     
     /**
      * Constructs an empty list
      */
     public SimpleLinkedList() {
-	head = null;
-	tail = null;
+	head = new DblListnode<E>(null);
+	tail = head;
 	numItems = 0;
     }
     
@@ -63,20 +63,10 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	    throw new IllegalArgumentException();
 	}
 	
-	else {
-	    if (numItems == 0) {
-		head = new DblListnode<E>(item);
-		tail = head;
-	    }
-	    
-	    else {
-		tail.setNext(new DblListnode<E>(item));
-		tail.getNext().setPrev(tail);
-		tail = tail.getNext();
-	    }
-	    
-	    numItems++;
-	}
+	tail.setNext(new DblListnode<E>(item,tail,null));
+	tail = tail.getNext();
+		
+	numItems++;
     }
     
     
@@ -96,30 +86,22 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	    throw new IllegalArgumentException();
 	}
 	
-	else if (pos < 0 || pos >= numItems) {
+	else if (pos < 0 || pos > numItems) {
 	    throw new IndexOutOfBoundsException();
 	}
 	
-	else {
-	    // special case of size 0:
-	    if (numItems == 0) {
-		head = new DblListnode<E>(item);
-		tail = head;
-	    }
-	    
-	    // general case:
-	    else {
-		curr = head;
-		currIndex = 0;
-		while (curr.getNext() != null && currIndex < pos) {
-		    curr = curr.getNext();
-		    currIndex++;
-		}
-		// arrived at pos. Insert new node ahead of curr (which is at pos)
-		curr.setPrev(new DblListnode<E>(item, curr.getPrev(), curr));
-	    }
-	    numItems++;
+	if(pos == numItems){
+		this.add(item);
 	}
+		
+	else{
+		this.get(pos);
+		DblListnode<E> newDblLn = new DblListnode<E>(item,curr.getPrev(),curr);
+		curr.getPrev().setNext(newDblLn);
+		curr.setPrev(newDblLn);
+		numItems++;
+	}
+				
     }
     
     
@@ -131,9 +113,14 @@ public class SimpleLinkedList<E> implements ListADT<E> {
      * @return true if item is in the List, false otherwise
      */
     public boolean contains(E item) {
-	curr = head;
+    if(item == null){
+		throw new IllegalArgumentException();
+	}
+			
+	curr = head.getNext();
+
 	while (curr.getNext() != null) {
-	    if (curr.getData() == item) {// should this be == or .equals?
+	    if (curr.getData().equals(item)) {// should this be == or .equals? // should be .equals
 		return true;
 	    }
 	    curr = curr.getNext();
@@ -157,11 +144,11 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	}
 	
 	curr = head;
-	currIndex = 0;
-	while (curr.getNext() != null && currIndex < pos) {
-	    curr = curr.getNext();
-	    currIndex++;
+		
+	for(int i = 0; i <= pos; i++){
+		curr = curr.getNext();
 	}
+		
 	return curr.getData();
     }
     
@@ -192,17 +179,16 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	    throw new IndexOutOfBoundsException();
 	}
 	
-	curr = head;
-	currIndex = 0;
-	while (curr.getNext() != null && currIndex < pos) {
-	    curr = curr.getNext();
-	    currIndex++;
+	E item = this.get(pos);
+	curr.getPrev().setNext(curr.getNext());
+
+	if(curr.getNext() != null){//Check whether its the last item in the list			
+		curr.getNext().setPrev(curr.getPrev());
 	}
 	
-	// remove current node and redo links:
-	curr.getPrev().setNext(curr.getNext());
-	curr.getNext().setPrev(curr.getPrev());
-	return curr.getData();
+	numItems--;
+
+	return item;
     }
     
     

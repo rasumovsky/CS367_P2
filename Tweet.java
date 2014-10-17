@@ -49,7 +49,7 @@ class Tweet{
      */
     public Tweet(int time, String message, String user) throws TweetTooLongException {
 	
-	if (message == null || user == null) {// should we check for time == null and how?
+	if (message == null || user == null || time < 0) {// should we check for time == null and how?// time <0?
 	    throw new IllegalArgumentException();
 	}
 	if (message.length() > 140) {
