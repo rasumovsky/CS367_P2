@@ -2,7 +2,7 @@
 // 
 // Main Class File:  Twitter.java 
 // File:             SimpleLinkedList.java
-// Semester:         CS302 Fall 2014
+// Semester:         CS367 Fall 2014
 //
 // Author:           Andrew Hard 
 // Email:            hard@wisc.edu
@@ -21,7 +21,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 import java.util.*;
-
 
 /**
  * The SimpleLinkedList class implements the ListADT using
