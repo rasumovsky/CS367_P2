@@ -1,7 +1,36 @@
+///////////////////////////////////////////////////////////////////////////////
+// 
+// Main Class File:  Twitter.java 
+// File:             SimpleLinkedList.java
+// Semester:         CS302 Fall 2014
+//
+// Author:           Andrew Hard 
+// Email:            hard@wisc.edu
+// CS Login:         hard
+// Lecturer's Name:  Jim Skrentny 
+// Lab Section:      LEC-002 (77632)
+//
+///////////////////////////////////////////////////////////////////////////////
+//
+// Pair Partner:     Wayne Chew
+// Email:            mchew2@wisc.edu
+// CS Login:         mchew
+// Lecturer's Name:  Jim Skrentny
+// Lab Section:      LEC-001 (77631)
+//
+///////////////////////////////////////////////////////////////////////////////
 
 import java.util.*;
+
+
+/**
+ * The SimpleLinkedList class implements the ListADT using
+ * a doubly linked chain of nodes.
+ *
+ * @author Ming Chew
+ * @author Andrew Hard
+ */
 public class SimpleLinkedList<E> implements ListADT<E> {
-    
     
     // The private objects:
     private int numItems;
@@ -12,7 +41,10 @@ public class SimpleLinkedList<E> implements ListADT<E> {
     DblListnode<E> curr;        // for traversing chain
     int currIndex;              // track traversing position
     
-    // Constructor:
+    
+    /**
+     * Constructs an empty list
+     */
     public SimpleLinkedList() {
 	head = null;
 	tail = null;
