@@ -5,18 +5,23 @@ import java.util.*;
  */
 class Timeline{
 
+    // NB: It would be useful to construct an iterator class for SimpleLinkedList...
+    // Would have to be an independent class, since we are not allowed to add public methods.
+
     //private SimpleLinkedList<Tweet> tlList;
     private ListADT<Tweet> tlList;
     private int currPos;
+
     
     /**
      * Constructs an empty timeline
      */
     public Timeline() {
-	tlList = new SimpleLinkedList<Tweet>;
+	tlList = new SimpleLinkedList<Tweet>();
 	currPos = 0;
     }
     
+
     /**
      * Adds a single tweet to the Timeline
      * 
@@ -26,7 +31,7 @@ class Timeline{
 	
 	for (int i = 0; i < tlList.size(); i++) {
 	    if (tweet.getTime() < tlList.get(currPos).getTime()) {
-		tlList.add(tweet,i);
+		tlList.add(i,tweet);
 		break;
 	    }
 	}
@@ -103,6 +108,7 @@ class Timeline{
 	}   
     }
     
+
     /**
      * Print each tweet in the timeline since time
      * 
