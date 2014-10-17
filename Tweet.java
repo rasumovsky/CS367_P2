@@ -1,4 +1,3 @@
-
 ///////////////////////////////////////////////////////////////////////////////
 // 
 // Main Class File:  Twitter.java 
@@ -48,19 +47,23 @@ class Tweet{
      * @throws TweetTooLongException if message over 140 characters 
      */
     public Tweet(int time, String message, String user) throws TweetTooLongException {
-	
-	if (message == null || user == null || time < 0) {// should we check for time == null and how?// time <0?
-	    throw new IllegalArgumentException();
+	try {
+	    if (message == null || user == null || time < 0) {// should we check for time == null and how?// time <0?
+		throw new IllegalArgumentException();
+	    }
+	    if (message.length() > 140) {
+		throw new TweetTooLongException();
+	    }
+	    tweetTime = time;
+	    tweetMessage = message;
+	    tweetUser = user;
 	}
-	if (message.length() > 140) {
-	    throw new TweetTooLongException();
+	catch (TweetTooLongException e1) {
 	}
-	
-	tweetTime = time;
-	tweetMessage = message;
-	tweetUser = user;
+	catch (IllegalArgumentException e2) {
+	}
     }
-
+    
     
     /** 
      * Returns the stored message of the Tweet
@@ -93,7 +96,7 @@ class Tweet{
      * Print the Tweet with the following format: <TIME> <USER>:<MESSAGE>
      */
     public void print() {
-	System.out.printf("%d %s:%s", tweetTime, tweetUser, tweetMessage);
+	System.out.printf("%d %s:%s\n", tweetTime, tweetUser, tweetMessage);
     }
 }
 
