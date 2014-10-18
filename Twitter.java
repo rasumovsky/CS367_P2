@@ -75,8 +75,16 @@ public class  Twitter{
 		    break;
 		    
 		case "print":
-		    if (commands[1].length() > 0) {
+		    if (commands[1].trim().length() > 0) {
 			twitTimeline.print();
+		    }
+		    else {
+			// this casting might throw some exception...
+			int currTime = valueOf(commands[1]);
+			if (currTime < 0) {
+			    throw new IllegalArgumentException();
+			}
+			twitTimeline.print(currTime);
 		    }
 		    break;
 		    
