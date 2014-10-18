@@ -1,11 +1,49 @@
+////////////////////////////////////////////////////////////////////////////////
+// 
+// Title:            Twitter
+// Files:            Twitter.java, Timeline.java, Tweet.java 
+//                   SimpleLinkedList.java, TweetTooLongException.java, 
+//                   ListADT.java, DblListnode.java
+// Semester:         CS367 Fall 2014
+//
+// Author:           Andrew Hard
+// Email:            hard@wisc.edu
+// CS Login:         hard
+// Lecturer's Name:  Jim Skrentny
+// Lab Section:      LEC-002 (77632)
+//
+///////////////////////////////////////////////////////////////////////////////
+//
+// Pair Partner:     Wayne Chew
+// Email:            mchew2@wisc.edu
+// CS Login:         mchew
+// Lecturer's Name:  Jim Skrentny
+// Lab Section:      LEC-001 (77631)
+//
+///////////////////////////////////////////////////////////////////////////////
+
 // TODO *** add comments as specified in the commenting guide ***
 
 import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+
+/** 
+ * The Twitter class reads user files as command-line inputs. All users are 
+ * initially followed. The program creates a list of users that are followed,
+ * and creates a Timeline object to represent the time line of tweets 
+ * associated with the followed users. 
+ */
+
 public class  Twitter{
 
-
+    /** 
+     * Search for a String in a list of Strings.
+     *
+     * @param list The list of Strings to search.
+     * @param item The item to find in the list of Strings.
+     * @return true iff item is found in list.
+     */
     public static boolean Compare(List<String> list, String item){
         for(int i = 0; i < list.size(); i++){
             if(list.get(i).equals(item)){
@@ -14,7 +52,15 @@ public class  Twitter{
         }
         return false;
     }
-
+    
+    
+    /**
+     * The main method creates an instance of Timeline and
+     * then prompts the user for options to follow or unfollow
+     * users, search tweets, and print or list information.
+     *
+     * @param args[] The input files associated with all users.
+     */
     public static void main(String[] args) throws FileNotFoundException,TweetTooLongException{
 	
 	// Check that at least one user file has been provided:
