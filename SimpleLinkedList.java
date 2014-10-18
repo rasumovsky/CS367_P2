@@ -38,7 +38,7 @@ public class SimpleLinkedList<E> implements ListADT<E> {
     
     private DblListnode<E> newDblLn;    // to create new DblListnodes
     private DblListnode<E> curr;        // for traversing chain
-    private int currIndex;              // track traversing position //Do we need this?
+    private int currIndex=0;              // track traversing position //Do we need this?
     
     
     /**
@@ -91,17 +91,18 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	}
 	
 	if(pos == numItems){
-		this.add(item);
+		this.add(item);		
 	}
 		
 	else{
 		this.get(pos);
+
 		DblListnode<E> newDblLn = new DblListnode<E>(item,curr.getPrev(),curr);
 		curr.getPrev().setNext(newDblLn);
 		curr.setPrev(newDblLn);
 		numItems++;
-	}
-				
+
+	}				
     }
     
     
@@ -144,7 +145,6 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	}
 	
 	curr = head;
-		
 	for(int i = 0; i <= pos; i++){
 		curr = curr.getNext();
 	}
@@ -159,7 +159,12 @@ public class SimpleLinkedList<E> implements ListADT<E> {
      * @return true if the List is empty, false otherwise
      */
     public boolean isEmpty() {
-	return (numItems == 0);
+		if(numItems == 0){
+			return true;			
+		}
+		else {
+			return false;
+		}
     }
     
     
@@ -187,7 +192,10 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	}
 	
 	numItems--;
-
+	if(this.isEmpty()){
+		head = new DblListnode<E>(null);
+		tail = head;
+	}
 	return item;
     }
     

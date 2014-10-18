@@ -51,13 +51,25 @@ class Timeline{
      * @param tweet the tweet to add
      */
     public void add(Tweet tweet) {
-	
-	for (int i = 0; i < tlList.size(); i++) {
-	    if (tweet.getTime() < tlList.get(currPos).getTime()) {
-		tlList.add(i,tweet);
-		break;
-	    }
-	}
+    boolean isAdd = false;
+    if(tlList.isEmpty()){
+        tlList.add(tweet);
+        isAdd = true;
+
+    }//If list is empty, add a new tweet
+    else{
+        for(int i = 0; i < tlList.size(); i++){
+            if(!isAdd){
+                if(tlList.get(i).getTime() > tweet.getTime()){
+                    tlList.add(i,tweet);
+                    isAdd = true;
+                }
+            }
+        }
+    }//Compare the time and add tweet into timeline
+    if(!isAdd){
+        tlList.add(tweet);
+    }//If tweet is not added yet, add it into the list
     }
     
     
@@ -66,14 +78,9 @@ class Timeline{
      * @param tweets the list of tweets to add
      */
     public void add(List<Tweet> tweets) {
-	
-	if (tweets != null) {
-	    
-	    Iterator<Tweet> twtItr = tweets.iterator();
-	    while (twtItr.hasNext()) {
-		this.add(twtItr.next());
-	    }
-	}
+		for(int i = 0; i < tweets.size(); i++){
+            this.add(tweets.get(i));
+        }    
     }
     
     
@@ -87,7 +94,15 @@ class Timeline{
 	if (user != null) {
 	    int tlIndex = 0;
 	    // careful when removing to not skip over a tweet...
-	    while (tlIndex < tlList.size()) {
+        for(int i=1; i<tlList.size(); i++){
+            if(tlList.get(i).getUser().equals(user)){
+                Tweet test = tlList.remove(i);
+                i--;
+
+            }
+        }//a for loop works too
+
+        /*while (tlIndex < tlList.size()) {
 	
 		if (tlList.get(tlIndex).getUser().equals(user)) {
 		    tlList.remove(tlIndex);
@@ -96,7 +111,7 @@ class Timeline{
 		else {
 		    tlIndex++;
 		}
-	    }
+	    }*/
 	}
 	
     }
@@ -112,8 +127,8 @@ class Timeline{
 	
 	Timeline newTimeline = new Timeline(); 
 	if (keyword != null) {
-	    for (int i = 0; i < tlList.size(); i++) {
-		if (tlList.get(i).getMessage().toLowerCase().contains(keyword.toLowerCase())) {
+	    for (int i = 1; i < tlList.size(); i++) {
+		if (tlList.get(i).getMessage().contains(keyword)) {//shouldn't it be case-sensitive? There's a post on piazza that says everything in P2 is case-sensitive
 		    newTimeline.add(tlList.get(i));
 		}
 	    }
@@ -126,8 +141,9 @@ class Timeline{
      * Print each tweet in the timeline
      */
     public void print(){
-	for (int i = 0; i < tlList.size(); i++) {
+	for (int i = 1; i < tlList.size(); i++) {
 	    tlList.get(i).print();
+
 	}   
     }
     
@@ -138,8 +154,8 @@ class Timeline{
      * @param time the largest time to print tweets
      */
     public void print(int time){
-	for (int i = 0; i < tlList.size(); i++) {
-	    if (tlList.get(i).getTime() > time) {
+	for (int i = 1; i < tlList.size(); i++) {
+	    if (tlList.get(i).getTime() <= time) {
 		tlList.get(i).print();
 	    }
 	}   
