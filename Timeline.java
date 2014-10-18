@@ -128,7 +128,7 @@ class Timeline{
 	Timeline newTimeline = new Timeline(); 
 	if (keyword != null) {
 	    for (int i = 1; i < tlList.size(); i++) {
-		if (tlList.get(i).getMessage().contains(keyword)) {//shouldn't it be case-sensitive? There's a post on piazza that says everything in P2 is case-sensitive
+		if (tlList.get(i).getMessage().contains(keyword)) {//case-sensitive? yes
 		    newTimeline.add(tlList.get(i));
 		}
 	    }
@@ -155,7 +155,7 @@ class Timeline{
      */
     public void print(int time){
 	for (int i = 1; i < tlList.size(); i++) {
-	    if (tlList.get(i).getTime() <= time) {
+	    if (tlList.get(i).getTime() < time) {//less than only
 		tlList.get(i).print();
 	    }
 	}   
