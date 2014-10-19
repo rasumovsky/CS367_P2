@@ -29,16 +29,16 @@ import java.util.*;
  */
 class Timeline{
     
-    //private ListADT<Tweet> tlList;// implement via SimpleLinkedList class
-    private List<Tweet> tlList;// implement via SimpleLinkedList class
+    private ListADT<Tweet> tlList;// implement via SimpleLinkedList class
+    //private List<Tweet> tlList;// implement via SimpleLinkedList class
     
     
     /**
      * Constructs an empty timeline
      */
     public Timeline() {
-	//tlList = new SimpleLinkedList<Tweet>();
-	tlList = new LinkedList<Tweet>();
+	tlList = new SimpleLinkedList<Tweet>();
+	//tlList = new LinkedList<Tweet>();
     }
     
 
