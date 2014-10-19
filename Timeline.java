@@ -23,25 +23,20 @@
 import java.util.*;
 
 /**
- * The Timeline class uses SimpleLinkedList to build a time ordered list of 
- * following tweets. Tweets with smaller Time fields should come earlier in the list.
+ * The Timeline class uses SimpleLinkedList class to build a time ordered 
+ * list of following tweets. Tweets with smaller Time fields should come 
+ * earlier in the list.
  */
 class Timeline{
-
-    // NB: It would be useful to construct an iterator class for SimpleLinkedList...
-    // Would have to be an independent class, since we are not allowed to add public methods.
-
-    //private SimpleLinkedList<Tweet> tlList;
-    private ListADT<Tweet> tlList;
-    private int currPos;
-
+    
+    private ListADT<Tweet> tlList;//will implement via SimpleLinkedList class
+        
     
     /**
      * Constructs an empty timeline
      */
     public Timeline() {
 	tlList = new SimpleLinkedList<Tweet>();
-	currPos = 0;
     }
     
 
@@ -51,25 +46,28 @@ class Timeline{
      * @param tweet the tweet to add
      */
     public void add(Tweet tweet) {
-    boolean isAdd = false;
-    if(tlList.isEmpty()){
-        tlList.add(tweet);
-        isAdd = true;
-
-    }//If list is empty, add a new tweet
-    else{
-        for(int i = 0; i < tlList.size(); i++){
-            if(!isAdd){
-                if(tlList.get(i).getTime() > tweet.getTime()){
-                    tlList.add(i,tweet);
-                    isAdd = true;
-                }
-            }
-        }
-    }//Compare the time and add tweet into timeline
-    if(!isAdd){
-        tlList.add(tweet);
-    }//If tweet is not added yet, add it into the list
+	boolean wasAdded = false;
+	
+	// If list is empty, add a new tweet:
+	if (tlList.isEmpty()) {
+	    tlList.add(tweet);
+	    wasAdded = true;
+	}
+	// Else compare the time and add tweet into timeline:
+	else{
+	    for (int i = 0; i < tlList.size(); i++) {
+		if (!wasAdded) {
+		    if (tweet.getTime() < tlList.get(i).getTime()) {
+			tlList.add(i,tweet);
+			wasAdded = true;
+		    }
+		}
+	    }
+	}
+	// If tweet is not added yet, add it into the list:
+	if (!wasAdded) {
+	    tlList.add(tweet);
+	}
     }
     
     
@@ -78,7 +76,7 @@ class Timeline{
      * @param tweets the list of tweets to add
      */
     public void add(List<Tweet> tweets) {
-		for(int i = 0; i < tweets.size(); i++){
+	for (int i = 0; i < tweets.size(); i++) {
             this.add(tweets.get(i));
         }    
     }
@@ -92,30 +90,32 @@ class Timeline{
     public void remove(String user) {
 	
 	if (user != null) {
-	    int tlIndex = 0;
+	    
 	    // careful when removing to not skip over a tweet...
-        for(int i=1; i<tlList.size(); i++){
-            if(tlList.get(i).getUser().equals(user)){
-                Tweet test = tlList.remove(i);
-                i--;
-
-            }
-        }//a for loop works too
-
-        /*while (tlIndex < tlList.size()) {
-	
-		if (tlList.get(tlIndex).getUser().equals(user)) {
-		    tlList.remove(tlIndex);
-		}
+	    // Shouldn't this start from zero? The zeroth element in the timeline should be nonzero. 
+	    //for (int i = 1; i < tlList.size(); i++ ) {
+	    for (int i = 0; i < tlList.size(); i++ ) {
 		
-		else {
-		    tlIndex++;
+		if (tlList.get(i).getUser().equals(user)) {
+		    Tweet test = tlList.remove(i);
+		    i--;
 		}
-	    }*/
+	    }
+	    
+	    /*while (tlIndex < tlList.size()) {
+	      
+	      if (tlList.get(tlIndex).getUser().equals(user)) {
+	      tlList.remove(tlIndex);
+	      }
+	      
+	      else {
+	      tlIndex++;
+	      }
+	      }*/
 	}
 	
     }
-
+    
     
     /**
      * Create a new Timeline containing only the tweets containing keyword

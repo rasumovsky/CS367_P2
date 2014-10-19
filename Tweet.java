@@ -48,7 +48,8 @@ class Tweet{
      */
     public Tweet(int time, String message, String user) throws TweetTooLongException {
 	try {
-	    if (message == null || user == null || time < 0) {// should we check for time == null and how?// time <0?
+	    // should we check for time == null and how?// time <0?
+	    if (message == null || user == null || time < 0) {
 		throw new IllegalArgumentException();
 	    }
 	    if (message.length() > 140) {
@@ -58,9 +59,9 @@ class Tweet{
 	    tweetMessage = message;
 	    tweetUser = user;
 	}
-	catch (TweetTooLongException e1) {
+	catch (TweetTooLongException e1) {// Should we remove the catch to see if it crashes?
 	}
-	catch (IllegalArgumentException e2) {
+	catch (IllegalArgumentException e2) {// ditto
 	}
     }
     
