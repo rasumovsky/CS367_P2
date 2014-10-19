@@ -93,8 +93,8 @@ class Timeline{
 	    
 	    // careful when removing to not skip over a tweet...
 	    // Shouldn't this start from zero? The zeroth element in the timeline should be nonzero. 
-	    //for (int i = 0; i < tlList.size(); i++ ) { <------ should it be this?
-	    for (int i = 1; i < tlList.size(); i++ ) {// <------ I don't understand this...
+	    for (int i = 0; i < tlList.size(); i++ ) {// <------ should it be this?
+	    //for (int i = 1; i < tlList.size(); i++ ) {// <------ I don't understand this...
 		
 		if (tlList.get(i).getUser().equals(user)) {
 		    Tweet test = tlList.remove(i);
@@ -127,8 +127,9 @@ class Timeline{
 	
 	Timeline newTimeline = new Timeline(); 
 	if (keyword != null) {
-	    for (int i = 1; i < tlList.size(); i++) {
-		if (tlList.get(i).getMessage().contains(keyword)) {//case-sensitive? yes
+	    // must start from zero in loop over list elements:
+	    for (int i = 0; i < tlList.size(); i++) {
+		if (tlList.get(i).getMessage().contains(keyword)) {//case-sensitive
 		    newTimeline.add(tlList.get(i));
 		}
 	    }
@@ -141,9 +142,9 @@ class Timeline{
      * Print each tweet in the timeline
      */
     public void print(){
-	for (int i = 1; i < tlList.size(); i++) {
+	//for (int i = 1; i < tlList.size(); i++) {
+	for (int i = 0; i < tlList.size(); i++) {
 	    tlList.get(i).print();
-
 	}   
     }
     
@@ -154,11 +155,12 @@ class Timeline{
      * @param time the largest time to print tweets
      */
     public void print(int time){
-	for (int i = 1; i < tlList.size(); i++) {
-	    if (tlList.get(i).getTime() < time) {//less than only
-		tlList.get(i).print();
-	    }
-	}   
+	// start with index 0 in order to print 1st element
+	int index = 0;
+	while (tlList.get(index).getTime() < time) {
+	    tlList.get(index).print();
+	    index++;
+	}
     }
 }
 

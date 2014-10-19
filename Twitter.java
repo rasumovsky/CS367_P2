@@ -56,29 +56,31 @@ public class Twitter{
 	
 	System.out.println("ENTERING DEBUGGER");
 	
+	
 	System.out.println("");
-	System.out.println("allTweets:");
+	System.out.printf("allUsers    size=%d\n",allUsers.size());
+	for (int i = 0; i < allUsers.size(); i++) {
+	    System.out.println(allUsers.get(i));
+	}
+	
+	System.out.println("");
+	System.out.printf("followedUsers    size=%d\n",followedUsers.size());
+	for (int i = 0; i < followedUsers.size(); i++) {
+	    System.out.println(followedUsers.get(i));
+	}
+
+	System.out.println("");
+	System.out.printf("allTweets:    size=%d\n",allTweets.size());
 	for (int i = 0; i < allTweets.size(); i++) {
+	    System.out.printf("   current user: %s    size=%d\n",allTweets.get(i).get(0).getUser(),allTweets.get(i).size());
 	    for (int j = 0; j < allTweets.get(i).size(); j++) {
 		allTweets.get(i).get(j).print();
 	    }
 	}
 	
 	System.out.println("");
-	System.out.println("followedTimeline:");
+	System.out.println("followedTimeline");
 	followedTimeline.print();
-	
-	System.out.println("");
-	System.out.println("allUsers");
-	for (int i = 0; i < allUsers.size(); i++) {
-	    System.out.println(allUsers.get(i));
-	}
-	
-	System.out.println("");
-	System.out.println("followedUsers");
-	for (int i = 0; i < followedUsers.size(); i++) {
-	    System.out.println(followedUsers.get(i));
-	}
     }
     
     
@@ -155,8 +157,8 @@ public class Twitter{
 	
 
 	
-	// AT THIS POINT, INPUTS SHOULD BE OK. STILL PROBLEM WITH TWEET TOO LONG EXCEPTION.
-	debugPrinter( allTweets, followedTimeline, allUsers, followedUsers);
+	// AT THIS POINT, INPUTS SHOULD BE OK.
+	//debugPrinter( allTweets, followedTimeline, allUsers, followedUsers);
 	
 	
 
@@ -178,18 +180,20 @@ public class Twitter{
 		    
 		    
 		case "list": // Case 1: list all or following users
-		    if (commands.length == 1) {
+		    if (commands.length != 2) {
 			System.out.println("Invalid command");
 			break;
 		    }
+
 		    switch (commands[1]) {
-		    case "users":
+		    
+		    case "users":// list users
 			for (int i = 0; i < allUsers.size(); i++) {
 			    System.out.println(allUsers.get(i));
 			}
-			break;//case users
+			break;
 			
-		    case "following":
+		    case "following": // list followers
 			for (int i = 0; i < followedUsers.size(); i++) {
 			    System.out.println(followedUsers.get(i));
 			}
@@ -200,11 +204,16 @@ public class Twitter{
 		    
 		    
 		case "follow": // Follow an existing user
+		    if (commands.length != 2) {
+			System.out.println("Invalid command");
+			break;
+		    }
+		    
 		    user = commands[1];
-		  
+		    
 		    // First check that user exists:
-		    if (Compare(allUsers,user)) {
-
+		    if (Compare(allUsers, user)) {
+			
 			// If they are not yet followed, follow
 			if (!Compare(followedUsers, user)) {
 			    followedUsers.add(user);
@@ -223,15 +232,22 @@ public class Twitter{
 		    else {// If user does not exist:
 			System.out.println("Invalid user");
 		    }
+		    // DEBUGGING:
+		    debugPrinter( allTweets, followedTimeline, allUsers, followedUsers);
 		    break;
 		    
 		    
 		    
-		case "unfollow": // Unfollow an existing user
+		case "unfollow": // Unfollow an existing user:
+		    if (commands.length != 2) {
+			System.out.println("Invalid command");
+			break;
+		    }
+		    
 		    user = commands[1];
 		    
 		    // First check that user exists:
-		    if (Compare(allUsers,user)) {
+		    if (Compare(allUsers, user)) {
 			
 			// If they are already followed, unfollow:
 			if (Compare(followedUsers, user)) {
@@ -245,6 +261,8 @@ public class Twitter{
 		    else {// If user does not exist:
 			System.out.println("Invalid user");
 		    }
+		    // DEBUGGING:
+		    debugPrinter( allTweets, followedTimeline, allUsers, followedUsers);
 		    break;
 		    
 		    
