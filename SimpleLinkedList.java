@@ -33,13 +33,12 @@ public class SimpleLinkedList<E> implements ListADT<E> {
     
     // The private objects:
     private int numItems;
-    private DblListnode<E> head; //Do you want to create a header node?
-    private DblListnode<E> tail; // keep tail to make add() O(1)
+    private DblListnode<E> head;    //Use header node (null data).
+    private DblListnode<E> tail;    //Keep tail to make add() O(1)
     
-    private DblListnode<E> newDblLn;    // to create new DblListnodes
-    private DblListnode<E> curr;        // for traversing chain
-    private int currIndex=0;              // track traversing position //Do we need this?
-    
+    private DblListnode<E> newDblLn;// to create new DblListnodes
+    private DblListnode<E> curr;    // for traversing chain
+        
     
     /**
      * Constructs an empty list
@@ -65,7 +64,6 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	
 	tail.setNext(new DblListnode<E>(item,tail,null));
 	tail = tail.getNext();
-		
 	numItems++;
     }
     
@@ -90,18 +88,22 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	    throw new IndexOutOfBoundsException();
 	}
 	
-	if(pos == numItems){
-		this.add(item);		
+	if (pos == numItems) {
+	    this.add(item);		
 	}
 		
 	else{
-		this.get(pos);
-
-		DblListnode<E> newDblLn = new DblListnode<E>(item,curr.getPrev(),curr);
-		curr.getPrev().setNext(newDblLn);
-		curr.setPrev(newDblLn);
-		numItems++;
-
+	    // bring curr to pos:
+	    this.get(pos);
+	    
+	    // slightly more elegant:
+	    //curr.getPrev().setNext(new DblListnode<E>(item,curr.getPrev(),curr));
+	    //curr.setPrev(curr.getPrev().getNext());
+	    
+	    DblListnode<E> newDblLn = new DblListnode<E>(item,curr.getPrev(),curr);
+	    curr.getPrev().setNext(newDblLn);
+	    curr.setPrev(newDblLn);
+	    numItems++;
 	}				
     }
     
@@ -114,17 +116,33 @@ public class SimpleLinkedList<E> implements ListADT<E> {
      * @return true if item is in the List, false otherwise
      */
     public boolean contains(E item) {
-    if(item == null){
-		throw new IllegalArgumentException();
+	if (item == null) {
+	    throw new IllegalArgumentException();
 	}
-			
+	/* I think the code below doesn't work in the case that the first item is the one of interest in a list of only 1 item.
 	curr = head.getNext();
-
+	
 	while (curr.getNext() != null) {
-	    if (curr.getData().equals(item)) {// should this be == or .equals? // should be .equals
+	    if (curr.getData().equals(item)) {
 		return true;
 	    }
 	    curr = curr.getNext();
+	}
+	*/
+
+	// this should work for all cases:
+	if (this.isEmpty()) {
+	    return false;
+	}
+	else {
+	    curr = head;
+	    while (curr.getNext() != null) {
+		curr = curr.getNext();
+		
+		if (curr.getData().equals(item)) {
+		    return true;
+		}
+	    }
 	}
 	return false;
     }
@@ -145,10 +163,10 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	}
 	
 	curr = head;
-	for(int i = 0; i <= pos; i++){
-		curr = curr.getNext();
+	for (int i = 0; i <= pos; i++ ) {
+	    curr = curr.getNext();
 	}
-		
+	
 	return curr.getData();
     }
     
@@ -159,12 +177,8 @@ public class SimpleLinkedList<E> implements ListADT<E> {
      * @return true if the List is empty, false otherwise
      */
     public boolean isEmpty() {
-		if(numItems == 0){
-			return true;			
-		}
-		else {
-			return false;
-		}
+	boolean result = (numItems == 0);
+	return result;
     }
     
     
@@ -184,17 +198,20 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	    throw new IndexOutOfBoundsException();
 	}
 	
+	// The get() function moves curr to the pos location.
 	E item = this.get(pos);
 	curr.getPrev().setNext(curr.getNext());
-
-	if(curr.getNext() != null){//Check whether its the last item in the list			
-		curr.getNext().setPrev(curr.getPrev());
+	
+	//Check whether its the last item in the list:
+	if (curr.getNext() != null) {
+	    curr.getNext().setPrev(curr.getPrev());
 	}
 	
 	numItems--;
-	if(this.isEmpty()){
-		head = new DblListnode<E>(null);
-		tail = head;
+	// Is this necessary? Won't the head always be there?:
+	if (this.isEmpty()) {
+	    head = new DblListnode<E>(null);
+	    tail = head;
 	}
 	return item;
     }
