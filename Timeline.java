@@ -45,6 +45,7 @@ class Timeline{
      * 
      * @param tweet the tweet to add
      */
+    /*
     public void add(Tweet tweet) {
 	boolean wasAdded = false;
 	
@@ -69,15 +70,33 @@ class Timeline{
 	    tlList.add(tweet);
 	}
     }
+    */
     
+    // More concise implementation. Don't need the isEmpty condition, covered by !wasAdded statement.
+    public void add(Tweet tweet) {
+	boolean wasAdded = false;
+	int tlIndex = 0;
+	while (!wasAdded && tlIndex < tlList.size()) {
+	    if (tweet.getTime() < tlList.get(tlIndex).getTime()) {
+		tlList.add(tlIndex,tweet);
+		wasAdded = true;
+	    }
+	    tlIndex++;
+	}
+	// If tweet is not added yet, add it into the list:
+	if (!wasAdded) {
+	    tlList.add(tweet);
+	}
+    }
     
+        
     /**
      * Adds an ordered list of tweets to the Timeline
      * @param tweets the list of tweets to add
      */
     public void add(List<Tweet> tweets) {
 	for (int i = 0; i < tweets.size(); i++) {
-            this.add(tweets.get(i));
+	    this.add(tweets.get(i));
         }    
     }
     
@@ -90,30 +109,28 @@ class Timeline{
     public void remove(String user) {
 	
 	if (user != null) {
-	    
+	    /*
 	    // careful when removing to not skip over a tweet...
-	    // Shouldn't this start from zero? The zeroth element in the timeline should be nonzero. 
-	    for (int i = 0; i < tlList.size(); i++ ) {// <------ should it be this?
-	    //for (int i = 1; i < tlList.size(); i++ ) {// <------ I don't understand this...
+	    for (int i = 1; i < tlList.size(); i++ ) {//the index should start at zero
 		
 		if (tlList.get(i).getUser().equals(user)) {
 		    Tweet test = tlList.remove(i);
 		    i--;
 		}
 	    }
+	    */
 	    
-	    /*while (tlIndex < tlList.size()) {
-	      
-	      if (tlList.get(tlIndex).getUser().equals(user)) {
-	      tlList.remove(tlIndex);
-	      }
-	      
-	      else {
-	      tlIndex++;
-	      }
-	      }*/
+	    int tlIndex = 0;
+	    while (tlIndex < tlList.size()) {
+		
+		if (tlList.get(tlIndex).getUser().equals(user)) {
+		    tlList.remove(tlIndex);
+		}
+		else {
+		    tlIndex++;
+		}
+	    }
 	}
-	
     }
     
     

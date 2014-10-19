@@ -165,8 +165,7 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	curr = head;
 	for (int i = 0; i <= pos; i++ ) {
 	    curr = curr.getNext();
-	}
-	
+	}	
 	return curr.getData();
     }
     

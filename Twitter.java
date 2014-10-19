@@ -262,7 +262,7 @@ public class Twitter{
 			System.out.println("Invalid user");
 		    }
 		    // DEBUGGING:
-		    debugPrinter( allTweets, followedTimeline, allUsers, followedUsers);
+		    //debugPrinter( allTweets, followedTimeline, allUsers, followedUsers);
 		    break;
 		    
 		    
