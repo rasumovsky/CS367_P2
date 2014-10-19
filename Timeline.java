@@ -124,7 +124,6 @@ class Timeline{
      * Print each tweet in the timeline
      */
     public void print() {
-	System.out.printf("print() for size tlList.size()=%d\n",tlList.size());
 	for (int i = 0; i < tlList.size(); i++) {
 	    tlList.get(i).print();
 	}

@@ -52,38 +52,6 @@ public class Twitter{
     }
     
     
-    private static void debugPrinter( List<List<Tweet>> allTweets, Timeline followedTimeline, List<String> allUsers, List<String> followedUsers) {
-	
-	System.out.println("ENTERING DEBUGGER");
-	
-	
-	System.out.println("");
-	System.out.printf("allUsers    size=%d\n",allUsers.size());
-	for (int i = 0; i < allUsers.size(); i++) {
-	    System.out.println(allUsers.get(i));
-	}
-	
-	System.out.println("");
-	System.out.printf("followedUsers    size=%d\n",followedUsers.size());
-	for (int i = 0; i < followedUsers.size(); i++) {
-	    System.out.println(followedUsers.get(i));
-	}
-
-	System.out.println("");
-	System.out.printf("allTweets:    size=%d\n",allTweets.size());
-	for (int i = 0; i < allTweets.size(); i++) {
-	    System.out.printf("   current user: %s    size=%d\n",allTweets.get(i).get(0).getUser(),allTweets.get(i).size());
-	    for (int j = 0; j < allTweets.get(i).size(); j++) {
-		allTweets.get(i).get(j).print();
-	    }
-	}
-	
-	System.out.println("");
-	System.out.println("followedTimeline");
-	followedTimeline.print();
-    }
-    
-    
     /**
      * The main method creates an instance of Timeline and
      * then prompts the user for options to follow or unfollow
@@ -225,10 +193,6 @@ public class Twitter{
 			System.out.println("Invalid user");
 		    }
 		    
-		    ////////////////////////////
-		    // DEBUGGING:
-		    ////////////////////////////
-		    debugPrinter( allTweets, followedTimeline, allUsers, followedUsers);
 		    break;
 		    
 		    
@@ -257,11 +221,6 @@ public class Twitter{
 			System.out.println("Invalid user");
 		    }
 		    
-		    ////////////////////////////
-		    // DEBUGGING:
-		    ////////////////////////////
-		    // DEBUGGING:
-		    debugPrinter( allTweets, followedTimeline, allUsers, followedUsers);
 		    break;
 		    
 		    
