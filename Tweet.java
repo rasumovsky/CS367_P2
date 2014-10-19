@@ -59,8 +59,8 @@ class Tweet{
 	    tweetMessage = message;
 	    tweetUser = user;
 	}
-	catch (TweetTooLongException e1) {// Should we remove the catch to see if it crashes?
-	}
+	//catch (TweetTooLongException e1) {// Should we remove the catch to see if it crashes?
+	//}
 	catch (IllegalArgumentException e2) {// ditto
 	}
     }

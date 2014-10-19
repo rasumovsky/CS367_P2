@@ -93,8 +93,8 @@ class Timeline{
 	    
 	    // careful when removing to not skip over a tweet...
 	    // Shouldn't this start from zero? The zeroth element in the timeline should be nonzero. 
-	    //for (int i = 1; i < tlList.size(); i++ ) {
-	    for (int i = 0; i < tlList.size(); i++ ) {
+	    //for (int i = 0; i < tlList.size(); i++ ) { <------ should it be this?
+	    for (int i = 1; i < tlList.size(); i++ ) {// <------ I don't understand this...
 		
 		if (tlList.get(i).getUser().equals(user)) {
 		    Tweet test = tlList.remove(i);

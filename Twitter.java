@@ -42,13 +42,43 @@ public class Twitter{
      * @param item The item to find in the list of Strings.
      * @return true iff item is found in list.
      */
-    public static boolean Compare(List<String> list, String item){
-        for(int i = 0; i < list.size(); i++){
-            if(list.get(i).equals(item)){
+    private static boolean Compare(List<String> list, String item) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).equals(item)) {
                 return true;
             }
         }
         return false;
+    }
+    
+    
+    private static void debugPrinter( List<List<Tweet>> allTweets, Timeline followedTimeline, List<String> allUsers, List<String> followedUsers) {
+	
+	System.out.println("ENTERING DEBUGGER");
+	
+	System.out.println("");
+	System.out.println("allTweets:");
+	for (int i = 0; i < allTweets.size(); i++) {
+	    for (int j = 0; j < allTweets.get(i).size(); j++) {
+		allTweets.get(i).get(j).print();
+	    }
+	}
+	
+	System.out.println("");
+	System.out.println("followedTimeline:");
+	followedTimeline.print();
+	
+	System.out.println("");
+	System.out.println("allUsers");
+	for (int i = 0; i < allUsers.size(); i++) {
+	    System.out.println(allUsers.get(i));
+	}
+	
+	System.out.println("");
+	System.out.println("followedUsers");
+	for (int i = 0; i < followedUsers.size(); i++) {
+	    System.out.println(followedUsers.get(i));
+	}
     }
     
     
@@ -59,7 +89,7 @@ public class Twitter{
      *
      * @param args[] The input files associated with all users.
      */
-    public static void main(String[] args) throws FileNotFoundException,TweetTooLongException{
+    public static void main(String[] args) throws FileNotFoundException, TweetTooLongException {
 	
 	// Check that at least one user file has been provided:
 	if (args.length < 1) {
@@ -67,37 +97,38 @@ public class Twitter{
 	    System.exit(0);
 	}
 	
-	// Create instances of important variables:
-	List<List<Tweet>> tweets = new ArrayList<List<Tweet>>();//contains list of tweets sort by user
-	List<Tweet> userTweets;//contain tweets
+	// Create variables for continuously stored data:
+	List<List<Tweet>> allTweets = new ArrayList<List<Tweet>>();// List of all tweets sort by user
+	Timeline followedTimeline = new Timeline();//contains only tweets the user is following
 	
-	Timeline followTimeline = new Timeline();//contains only the tweet the user is following
-	List<String> currUser = new ArrayList<String>();//contains all user
-	List<String> followUser = new ArrayList<String>();//contains only followed user
-	String user;
+	List<String> allUsers = new ArrayList<String>();  // Lists all users
+	List<String> followedUsers = new ArrayList<String>();// Lists followed users
+	
+	// Variables that will be used in varying contexts:
+	String user;           // current user of interest
+	List<Tweet> userTweets;// contain tweets from user
 	
 	
 	// Loop over input files (one per user):
 	for (int i = 0; i < args.length; i++) {
-	    File dataFile = new File(args[i]);
-	    
-	    //currUser.args[i].replaceAll(".txt","");
-	    user = args[i].replace(".txt","");
-	    currUser.add(user);
-	    followUser.add(user);
 	    
 	    // Check whether input file exists and is readable: 
+	    File dataFile = new File(args[i]);
 	    if (!dataFile.exists()) {
 		System.out.println("Error: cannot access input file");
 		System.exit(0);
 	    }
 	    
+	    // Add users to program once file loads:
+	    user = args[i].replace(".txt","");
+	    allUsers.add(user);
+	    followedUsers.add(user);
+	    
 	    // Load the data from the input file:
 	    Scanner inputFile = new Scanner(dataFile);
 	    
-	    // Loop through the current input file:
-	    // Each line is one tweet
-	    userTweets = new ArrayList<Tweet>();//store a list of tweets
+	    // Loop through the current input file (1 tweet per line):
+	    userTweets = new ArrayList<Tweet>();// Store a list of tweets
 	    while (inputFile.hasNext()) {
 		
 		String currLine = inputFile.nextLine();
@@ -105,16 +136,30 @@ public class Twitter{
 		// Split the line into two strings at the colon:
 		String delims = ":";
 		String[] splitLine = currLine.split(delims);
-		userTweets.add(new Tweet(Integer.parseInt(splitLine[0]), splitLine[1], currUser.get(i)));
+		try {
+		    userTweets.add(new Tweet(Integer.parseInt(splitLine[0]), splitLine[1], allUsers.get(i)));
+		}
+		catch (TweetTooLongException ttle) {
+		    System.out.println("caught TweetTooLongException in Twitter main");
+		}
+		
 	    }
 	    inputFile.close();
-	    tweets.add(userTweets);//list storing lists of tweets by user
+	    allTweets.add(userTweets);//list storing lists of tweets by user
 	}
 	
-	for (int i = 0; i < tweets.size(); i++) {
-            followTimeline.add(tweets.get(i));
+	// Separate loop to reduce add complexity
+	for (int i = 0; i < allTweets.size(); i++) {
+            followedTimeline.add(allTweets.get(i));
 	}
 	
+
+	
+	// AT THIS POINT, INPUTS SHOULD BE OK. STILL PROBLEM WITH TWEET TOO LONG EXCEPTION.
+	debugPrinter( allTweets, followedTimeline, allUsers, followedUsers);
+	
+	
+
 	
 	// Initialize console input:
         Scanner stdin = new Scanner(System.in);
@@ -139,14 +184,14 @@ public class Twitter{
 		    }
 		    switch (commands[1]) {
 		    case "users":
-			for (int i = 0; i < currUser.size(); i++) {
-			    System.out.println(currUser.get(i));
+			for (int i = 0; i < allUsers.size(); i++) {
+			    System.out.println(allUsers.get(i));
 			}
 			break;//case users
 			
 		    case "following":
-			for (int i = 0; i < followUser.size(); i++) {
-			    System.out.println(followUser.get(i));
+			for (int i = 0; i < followedUsers.size(); i++) {
+			    System.out.println(followedUsers.get(i));
 			}
 			break;
 		    }
@@ -158,15 +203,15 @@ public class Twitter{
 		    user = commands[1];
 		  
 		    // First check that user exists:
-		    if (Compare(currUser,user)) {
+		    if (Compare(allUsers,user)) {
 
 			// If they are not yet followed, follow
-			if (!Compare(followUser, user)) {
-			    followUser.add(user);
+			if (!Compare(followedUsers, user)) {
+			    followedUsers.add(user);
 			    
-			    for (int i = 0; i < tweets.size(); i++) {
-				if (tweets.get(i).get(0).getUser().equals(user)) {
-				    followTimeline.add(tweets.get(i));
+			    for (int i = 0; i < allTweets.size(); i++) {
+				if (allTweets.get(i).get(0).getUser().equals(user)) {
+				    followedTimeline.add(allTweets.get(i));
 				}
 			    }
 			}
@@ -178,7 +223,6 @@ public class Twitter{
 		    else {// If user does not exist:
 			System.out.println("Invalid user");
 		    }
-		    
 		    break;
 		    
 		    
@@ -187,12 +231,12 @@ public class Twitter{
 		    user = commands[1];
 		    
 		    // First check that user exists:
-		    if (Compare(currUser,user)) {
+		    if (Compare(allUsers,user)) {
 			
 			// If they are already followed, unfollow:
-			if (Compare(followUser, user)) {
-			    followUser.remove(user);
-			    followTimeline.remove(user);//remove tweets from timeline
+			if (Compare(followedUsers, user)) {
+			    followedUsers.remove(user);
+			    followedTimeline.remove(user);//remove tweets from timeline
 			}
 			else {// If user already not followed:
 			    System.out.println("Warning: User not followed");
@@ -207,7 +251,7 @@ public class Twitter{
 		    
 		case "search": // Search for tweets that contain a string
 		    String string = commands[1];
-		    followTimeline.search(string).print();
+		    followedTimeline.search(string).print();
 		    
 		    break;
 		    
@@ -215,10 +259,10 @@ public class Twitter{
 		    
 		case "print": // Prints the timeline
 		    if (commands.length == 1) {// print entire timeline
-			followTimeline.print();
+			followedTimeline.print();
 		    }
 		    else if(commands.length == 2){//print after given time
-			followTimeline.print(Integer.parseInt(commands[1]));
+			followedTimeline.print(Integer.parseInt(commands[1]));
 		    }
 		    
 		    /*
