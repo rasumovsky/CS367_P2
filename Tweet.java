@@ -97,7 +97,9 @@ class Tweet{
      * Print the Tweet with the following format: <TIME> <USER>:<MESSAGE>
      */
     public void print() {
-	System.out.printf("%d %s:%s\n", tweetTime, tweetUser, tweetMessage);
+	if (tweetUser != null && tweetMessage != null) {
+	    System.out.printf("%d %s:%s\n", tweetTime, tweetUser, tweetMessage);
+	}
     }
 }
 

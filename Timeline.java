@@ -29,14 +29,16 @@ import java.util.*;
  */
 class Timeline{
     
-    private ListADT<Tweet> tlList;//will implement via SimpleLinkedList class
-        
+    //private ListADT<Tweet> tlList;// implement via SimpleLinkedList class
+    private List<Tweet> tlList;// implement via SimpleLinkedList class
+    
     
     /**
      * Constructs an empty timeline
      */
     public Timeline() {
-	tlList = new SimpleLinkedList<Tweet>();
+	//tlList = new SimpleLinkedList<Tweet>();
+	tlList = new LinkedList<Tweet>();
     }
     
 
@@ -45,34 +47,6 @@ class Timeline{
      * 
      * @param tweet the tweet to add
      */
-    /*
-    public void add(Tweet tweet) {
-	boolean wasAdded = false;
-	
-	// If list is empty, add a new tweet:
-	if (tlList.isEmpty()) {
-	    tlList.add(tweet);
-	    wasAdded = true;
-	}
-	// Else compare the time and add tweet into timeline:
-	else{
-	    for (int i = 0; i < tlList.size(); i++) {
-		if (!wasAdded) {
-		    if (tweet.getTime() < tlList.get(i).getTime()) {
-			tlList.add(i,tweet);
-			wasAdded = true;
-		    }
-		}
-	    }
-	}
-	// If tweet is not added yet, add it into the list:
-	if (!wasAdded) {
-	    tlList.add(tweet);
-	}
-    }
-    */
-    
-    // More concise implementation. Don't need the isEmpty condition, covered by !wasAdded statement.
     public void add(Tweet tweet) {
 	boolean wasAdded = false;
 	int tlIndex = 0;
@@ -109,25 +83,16 @@ class Timeline{
     public void remove(String user) {
 	
 	if (user != null) {
-	    /*
-	    // careful when removing to not skip over a tweet...
-	    for (int i = 1; i < tlList.size(); i++ ) {//the index should start at zero
-		
-		if (tlList.get(i).getUser().equals(user)) {
-		    Tweet test = tlList.remove(i);
-		    i--;
-		}
-	    }
-	    */
-	    
+	   
 	    int tlIndex = 0;
+	    // loop through list to check for and remove user tweets
 	    while (tlIndex < tlList.size()) {
 		
 		if (tlList.get(tlIndex).getUser().equals(user)) {
 		    tlList.remove(tlIndex);
 		}
 		else {
-		    tlIndex++;
+		    tlIndex++;// only move forward if nothing removed
 		}
 	    }
 	}
@@ -144,7 +109,7 @@ class Timeline{
 	
 	Timeline newTimeline = new Timeline(); 
 	if (keyword != null) {
-	    // must start from zero in loop over list elements:
+	    
 	    for (int i = 0; i < tlList.size(); i++) {
 		if (tlList.get(i).getMessage().contains(keyword)) {//case-sensitive
 		    newTimeline.add(tlList.get(i));
@@ -158,11 +123,11 @@ class Timeline{
     /**
      * Print each tweet in the timeline
      */
-    public void print(){
-	//for (int i = 1; i < tlList.size(); i++) {
+    public void print() {
+	System.out.printf("print() for size tlList.size()=%d\n",tlList.size());
 	for (int i = 0; i < tlList.size(); i++) {
 	    tlList.get(i).print();
-	}   
+	}
     }
     
 
@@ -171,13 +136,16 @@ class Timeline{
      * 
      * @param time the largest time to print tweets
      */
-    public void print(int time){
-	// start with index 0 in order to print 1st element
-	int index = 0;
-	while (tlList.get(index).getTime() < time) {
-	    tlList.get(index).print();
-	    index++;
+    public void print(int time) {
+	if (tlList.size() > 0) {
+	    int index = 0;
+	    while (index < tlList.size() && tlList.get(index).getTime() < time) {
+		tlList.get(index).print();
+		index++;
+		
+	    }
 	}
     }
+
 }
 

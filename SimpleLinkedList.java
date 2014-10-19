@@ -96,13 +96,8 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	    // bring curr to pos:
 	    this.get(pos);
 	    
-	    // slightly more elegant:
-	    //curr.getPrev().setNext(new DblListnode<E>(item,curr.getPrev(),curr));
-	    //curr.setPrev(curr.getPrev().getNext());
-	    
-	    DblListnode<E> newDblLn = new DblListnode<E>(item,curr.getPrev(),curr);
-	    curr.getPrev().setNext(newDblLn);
-	    curr.setPrev(newDblLn);
+	    curr.getPrev().setNext(new DblListnode<E>(item,curr.getPrev(),curr));
+	    curr.setPrev(curr.getPrev().getNext());
 	    numItems++;
 	}				
     }
@@ -119,18 +114,7 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	if (item == null) {
 	    throw new IllegalArgumentException();
 	}
-	/* I think the code below doesn't work in the case that the first item is the one of interest in a list of only 1 item.
-	curr = head.getNext();
-	
-	while (curr.getNext() != null) {
-	    if (curr.getData().equals(item)) {
-		return true;
-	    }
-	    curr = curr.getNext();
-	}
-	*/
 
-	// this should work for all cases:
 	if (this.isEmpty()) {
 	    return false;
 	}
@@ -157,16 +141,23 @@ public class SimpleLinkedList<E> implements ListADT<E> {
      * or equal to size()
      */
     public E get(int pos) {
-
-	if (pos < 0 || pos >= numItems) {
-	    throw new IndexOutOfBoundsException();
+	System.out.printf("get(int %d)\n",pos);
+	E result = null;
+	try {
+	    if (pos < 0 || pos >= numItems) {
+		throw new IndexOutOfBoundsException();
+	    }
+	    
+	    curr = head;
+	    for (int i = 0; i <= pos; i++ ) {
+		curr = curr.getNext();
+	    }	
+	    result = curr.getData();
 	}
-	
-	curr = head;
-	for (int i = 0; i <= pos; i++ ) {
-	    curr = curr.getNext();
-	}	
-	return curr.getData();
+	catch (NullPointerException npe){
+	    System.out.println("Caught Null Pointer Exception");
+	}
+	return result;
     }
     
     
@@ -199,10 +190,11 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	
 	// The get() function moves curr to the pos location.
 	E item = this.get(pos);
-	curr.getPrev().setNext(curr.getNext());
+	curr.getPrev().setNext(curr.getNext());// Is it ok if this is null?
 	
 	//Check whether its the last item in the list:
 	if (curr.getNext() != null) {
+	    
 	    curr.getNext().setPrev(curr.getPrev());
 	}
 	
@@ -212,6 +204,7 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	    head = new DblListnode<E>(null);
 	    tail = head;
 	}
+	
 	return item;
     }
     

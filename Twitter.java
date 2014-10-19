@@ -142,7 +142,7 @@ public class Twitter{
 		    userTweets.add(new Tweet(Integer.parseInt(splitLine[0]), splitLine[1], allUsers.get(i)));
 		}
 		catch (TweetTooLongException ttle) {
-		    System.out.println("caught TweetTooLongException in Twitter main");
+		    //System.out.println("caught TweetTooLongException in Twitter main");
 		}
 		
 	    }
@@ -154,14 +154,6 @@ public class Twitter{
 	for (int i = 0; i < allTweets.size(); i++) {
             followedTimeline.add(allTweets.get(i));
 	}
-	
-
-	
-	// AT THIS POINT, INPUTS SHOULD BE OK.
-	//debugPrinter( allTweets, followedTimeline, allUsers, followedUsers);
-	
-	
-
 	
 	// Initialize console input:
         Scanner stdin = new Scanner(System.in);
@@ -232,7 +224,10 @@ public class Twitter{
 		    else {// If user does not exist:
 			System.out.println("Invalid user");
 		    }
+		    
+		    ////////////////////////////
 		    // DEBUGGING:
+		    ////////////////////////////
 		    debugPrinter( allTweets, followedTimeline, allUsers, followedUsers);
 		    break;
 		    
@@ -261,8 +256,12 @@ public class Twitter{
 		    else {// If user does not exist:
 			System.out.println("Invalid user");
 		    }
+		    
+		    ////////////////////////////
 		    // DEBUGGING:
-		    //debugPrinter( allTweets, followedTimeline, allUsers, followedUsers);
+		    ////////////////////////////
+		    // DEBUGGING:
+		    debugPrinter( allTweets, followedTimeline, allUsers, followedUsers);
 		    break;
 		    
 		    
@@ -274,7 +273,6 @@ public class Twitter{
 		    break;
 		    
 		    
-		    
 		case "print": // Prints the timeline
 		    if (commands.length == 1) {// print entire timeline
 			followedTimeline.print();
@@ -282,21 +280,7 @@ public class Twitter{
 		    else if(commands.length == 2){//print after given time
 			followedTimeline.print(Integer.parseInt(commands[1]));
 		    }
-		    
-		    /*
-		      if (commands[1].trim().length() > 0) {
-		      twitTimeline.print();
-		      }
-		      else {
-		      // this casting might throw some exception...
-		      int currTime = valueOf(commands[1]);
-		      if (currTime < 0) {
-		      throw new IllegalArgumentException();
-		      }
-		      twitTimeline.print(currTime);
-		      }
-		    */
-		    
+		   
 		    break;
 		    
 		    
@@ -306,7 +290,7 @@ public class Twitter{
 		    break;
 		    
 		    
-		default: // A command with no argument
+		default: // A command with no argument is invalid
 		    System.out.println("Invalid Command");
 		    break;
                 }
