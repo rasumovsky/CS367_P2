@@ -46,7 +46,8 @@ class Tweet{
      * @param user the person who tweeted the tweet 
      * @throws TweetTooLongException if message over 140 characters 
      */
-    public Tweet(int time, String message, String user) throws TweetTooLongException {
+    public Tweet(int time, String message, String user) 
+	throws TweetTooLongException {
 	try {
 
 	    if (message == null || user == null || time < 0) {

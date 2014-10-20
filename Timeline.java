@@ -118,7 +118,8 @@ class Timeline{
 	    
         //search for tweets that contain keyword
 	    for (int i = 0; i < tlList.size(); i++) {
-		if (tlList.get(i).getMessage().contains(keyword)) {//case-sensitive
+		//case-sensitive keyword search:
+		if (tlList.get(i).getMessage().contains(keyword)) {
 		    newTimeline.add(tlList.get(i));
 		}
 	    }
@@ -145,7 +146,8 @@ class Timeline{
     public void print(int time) {
 	if (tlList.size() > 0) {
 	    int index = 0;
-	    while (index < tlList.size() && tlList.get(index).getTime() < time) {
+	    while (index < tlList.size() 
+		   && tlList.get(index).getTime() < time) {
 		tlList.get(index).print();
 		index++;
 		

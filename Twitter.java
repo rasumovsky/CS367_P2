@@ -108,7 +108,8 @@ public class Twitter{
 		String delims = ":";
 		String[] splitLine = currLine.split(delims);
 		try {
-		    userTweets.add(new Tweet(Integer.parseInt(splitLine[0]), splitLine[1], allUsers.get(i)));
+		    userTweets.add(new Tweet(Integer.parseInt(splitLine[0]),
+					     splitLine[1], allUsers.get(i)));
 		}
 		// Quietly handle TweetTooLong exception.
 		catch (TweetTooLongException ttle) {
