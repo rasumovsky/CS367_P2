@@ -97,7 +97,9 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	    // bring curr to pos:
 	    this.get(pos);
 	    
-	    curr.getPrev().setNext(new DblListnode<E>(item, curr.getPrev(), curr));
+	    curr.getPrev().setNext(new DblListnode<E>(item, 
+						      curr.getPrev(),
+						      curr));
 	    curr.setPrev(curr.getPrev().getNext());
 	    numItems++;
 	}				
@@ -105,11 +107,12 @@ public class SimpleLinkedList<E> implements ListADT<E> {
     
     
     /**
-     * Returns true iff item is in the List (i.e., there is an item x in the List 
-     * such that x.equals(item))
+     * Returns true iff item is in the List (i.e., there is an
+     * item x in the List such that x.equals(item))
      * 
      * @param item the item to check
      * @return true if item is in the List, false otherwise
+     * @throws IllegalArgumentException if item == null
      */
     public boolean contains(E item) {
 	if (item == null) {
@@ -138,8 +141,8 @@ public class SimpleLinkedList<E> implements ListADT<E> {
      * 
      * @param pos the position of the item to return
      * @return the item at position pos
-     * @throws IndexOutOfBoundsException if pos is less than 0 or greater than
-     * or equal to size()
+     * @throws IndexOutOfBoundsException if pos is less 
+     * than 0 or greater than or equal to size()
      */
     public E get(int pos) {
 	E result = null;
@@ -173,14 +176,14 @@ public class SimpleLinkedList<E> implements ListADT<E> {
     
     
     /**
-     * Removes and returns the item at position pos in the List, moving the items 
-     * originally in positions pos+1 through size() - 1 one place to the left to 
-     * fill in the gap.
+     * Removes and returns the item at position pos in the List,
+     * moving the items originally in positions pos+1 through
+     * size() - 1 one place to the left to fill in the gap.
      * 
      * @param pos the position at which to remove the item
      * @return the item at position pos
-     * @throws IndexOutOfBoundsException if pos is less than 0 or greater than
-     * or equal to size()
+     * @throws IndexOutOfBoundsException if pos is less than 0 or
+     * greater than or equal to size()
      */
     public E remove(int pos) {
 	
@@ -199,7 +202,6 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	
 	//Check whether its the last item in the list:
 	if (curr.getNext() != null) {
-	    
 	    curr.getNext().setPrev(curr.getPrev());
 	}
 	

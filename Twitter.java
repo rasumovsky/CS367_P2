@@ -59,7 +59,8 @@ public class Twitter{
      *
      * @param args[] The input files associated with all users.
      */
-    public static void main(String[] args) throws FileNotFoundException, TweetTooLongException {
+    public static void main(String[] args) throws FileNotFoundException,
+						  TweetTooLongException {
 	
 	// Check that at least one user file has been provided:
 	if (args.length < 1) {
@@ -67,12 +68,13 @@ public class Twitter{
 	    System.exit(0);
 	}
 	
-	// Create variables for continuously stored data:
-	List<List<Tweet>> allTweets = new ArrayList<List<Tweet>>();// List of all tweets sort by user
-	Timeline followedTimeline = new Timeline();//contains only tweets the user is following
+	// List of all tweets sort by user:
+	List<List<Tweet>> allTweets = new ArrayList<List<Tweet>>();
+	//contains only tweets the user is following:
+	Timeline followedTimeline = new Timeline();
 	
-	List<String> allUsers = new ArrayList<String>();  // Lists all users
-	List<String> followedUsers = new ArrayList<String>();// Lists followed users
+	List<String> allUsers = new ArrayList<String>();// Lists all users
+	List<String> followedUsers = new ArrayList<String>();// Lists followers
 	
 	// Variables that will be used in varying contexts:
 	String user;           // current user of interest
@@ -109,16 +111,18 @@ public class Twitter{
 		try {
 		    userTweets.add(new Tweet(Integer.parseInt(splitLine[0]), splitLine[1], allUsers.get(i)));
 		}
+		// Quietly handle TweetTooLong exception.
 		catch (TweetTooLongException ttle) {
-		    //System.out.println("caught TweetTooLongException in Twitter main");
+		    //System.out.println("Tweet must be < 140 characters");
 		}
 		
 	    }
 	    inputFile.close();
-	    allTweets.add(userTweets);//list storing lists of tweets by user
+	    //list storing lists of all tweets by all user:
+	    allTweets.add(userTweets);
 	}
 	
-	// Separate loop to reduce add complexity
+	// Separate loop to reduce the complexity
 	for (int i = 0; i < allTweets.size(); i++) {
             followedTimeline.add(allTweets.get(i));
 	}
@@ -135,8 +139,8 @@ public class Twitter{
             if (input.length() > 0) {
                 String[] commands = input.split("[ ]+");//split on space
 		
+		
 		switch (commands[0]) {
-		    
 		    
 		    
 		case "list": // Case 1: list all or following users
@@ -162,7 +166,6 @@ public class Twitter{
 		    break;
 
 		    
-		    
 		case "follow": // Follow an existing user
 		    if (commands.length != 2) {
 			System.out.println("Invalid command");
@@ -179,14 +182,16 @@ public class Twitter{
 			    followedUsers.add(user);
 			    
 			    for (int i = 0; i < allTweets.size(); i++) {
-				if (allTweets.get(i).get(0).getUser().equals(user)) {
+				if (allTweets.get(i).get(0).getUser()
+				    .equals(user)) {
 				    followedTimeline.add(allTweets.get(i));
 				}
 			    }
 			}
 			
 			else {// If user already followed:
-			    System.out.println("Warning: User already followed");
+			    System.out
+				.println("Warning: User already followed");
 			}
 		    }
 		    else {// If user does not exist:
@@ -195,8 +200,7 @@ public class Twitter{
 		    
 		    break;
 		    
-		    
-		    
+		    		    
 		case "unfollow": // Unfollow an existing user:
 		    if (commands.length != 2) {
 			System.out.println("Invalid command");
@@ -211,7 +215,7 @@ public class Twitter{
 			// If they are already followed, unfollow:
 			if (Compare(followedUsers, user)) {
 			    followedUsers.remove(user);
-			    followedTimeline.remove(user);//remove tweets from timeline
+			    followedTimeline.remove(user);
 			}
 			else {// If user already not followed:
 			    System.out.println("Warning: User not followed");
@@ -222,8 +226,7 @@ public class Twitter{
 		    }
 		    
 		    break;
-		    
-		    
+		    		    
 		    
 		case "search": // Search for tweets that contain a string
 		    String string = commands[1];
