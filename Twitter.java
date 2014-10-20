@@ -104,7 +104,6 @@ public class Twitter{
 	    while (inputFile.hasNext()) {
 		
 		String currLine = inputFile.nextLine();
-		
 		// Split the line into two strings at the colon:
 		String delims = ":";
 		String[] splitLine = currLine.split(delims);
@@ -113,7 +112,7 @@ public class Twitter{
 		}
 		// Quietly handle TweetTooLong exception.
 		catch (TweetTooLongException ttle) {
-		    //System.out.println("Tweet must be < 140 characters");
+
 		}
 		
 	    }
@@ -144,7 +143,8 @@ public class Twitter{
 		    
 		    
 		case "list": // Case 1: list all or following users
-		    if (commands.length != 2) {
+		    //Check for invalid commands
+            if (commands.length != 2) {
 			System.out.println("Invalid command");
 			break;
 		    }
@@ -157,7 +157,7 @@ public class Twitter{
 			}
 			break;
 			
-		    case "following": // list followers
+		    case "following": // list followed users
 			for (int i = 0; i < followedUsers.size(); i++) {
 			    System.out.println(followedUsers.get(i));
 			}
@@ -167,6 +167,7 @@ public class Twitter{
 
 		    
 		case "follow": // Follow an existing user
+            //Check for invalid commands
 		    if (commands.length != 2) {
 			System.out.println("Invalid command");
 			break;
@@ -202,6 +203,7 @@ public class Twitter{
 		    
 		    		    
 		case "unfollow": // Unfollow an existing user:
+            //Check for invalid commands
 		    if (commands.length != 2) {
 			System.out.println("Invalid command");
 			break;
@@ -229,13 +231,28 @@ public class Twitter{
 		    		    
 		    
 		case "search": // Search for tweets that contain a string
+            //Check for invalid commands
+            if(commands.length < 2){
+            System.out.println("Invalid command");
+            break;
+            }
+
 		    String string = commands[1];
+
+            //Search for the message and print it out
 		    followedTimeline.search(string).print();
 		    
 		    break;
 		    
 		    
 		case "print": // Prints the timeline
+            //Check for invalid commands
+            if(commands.length != 1 && commands.length != 2){
+            System.out.println("Invalid command");
+            break;
+            }
+
+
 		    if (commands.length == 1) {// print entire timeline
 			followedTimeline.print();
 		    }
@@ -247,6 +264,13 @@ public class Twitter{
 		    
 		    
 		case "quit": // Exit the program
+            //Check for invalid commands
+            if(commands.length != 1){
+            System.out.println("Invalid Command");
+            break;
+            }
+
+
 		    done = true;
 		    System.out.println("exit");
 		    break;

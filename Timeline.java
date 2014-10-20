@@ -54,6 +54,8 @@ class Timeline{
     public void add(Tweet tweet) {
 	boolean wasAdded = false;
 	int tlIndex = 0;
+
+    //Compare time of tweet and add it into list
 	while (!wasAdded && tlIndex < tlList.size()) {
 	    if (tweet.getTime() < tlList.get(tlIndex).getTime()) {
 		tlList.add(tlIndex,tweet);
@@ -114,6 +116,7 @@ class Timeline{
 	Timeline newTimeline = new Timeline(); 
 	if (keyword != null) {
 	    
+        //search for tweets that contain keyword
 	    for (int i = 0; i < tlList.size(); i++) {
 		if (tlList.get(i).getMessage().contains(keyword)) {//case-sensitive
 		    newTimeline.add(tlList.get(i));
