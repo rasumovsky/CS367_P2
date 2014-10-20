@@ -62,7 +62,7 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	    throw new IllegalArgumentException();
 	}
 	
-	tail.setNext(new DblListnode<E>(item,tail,null));
+	tail.setNext(new DblListnode<E>(item, tail, null));
 	tail = tail.getNext();
 	numItems++;
     }
@@ -88,15 +88,16 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	    throw new IndexOutOfBoundsException();
 	}
 	
+	// add at end:
 	if (pos == numItems) {
-	    this.add(item);		
+	    this.add(item);
 	}
-		
+	
 	else{
 	    // bring curr to pos:
 	    this.get(pos);
 	    
-	    curr.getPrev().setNext(new DblListnode<E>(item,curr.getPrev(),curr));
+	    curr.getPrev().setNext(new DblListnode<E>(item, curr.getPrev(), curr));
 	    curr.setPrev(curr.getPrev().getNext());
 	    numItems++;
 	}				
@@ -141,7 +142,6 @@ public class SimpleLinkedList<E> implements ListADT<E> {
      * or equal to size()
      */
     public E get(int pos) {
-	System.out.printf("get(int %d)\n",pos);
 	E result = null;
 	try {
 	    if (pos < 0 || pos >= numItems) {
@@ -188,9 +188,14 @@ public class SimpleLinkedList<E> implements ListADT<E> {
 	    throw new IndexOutOfBoundsException();
 	}
 	
-	// The get() function moves curr to the pos location.
+	// The get() method moves curr to pos location:
 	E item = this.get(pos);
-	curr.getPrev().setNext(curr.getNext());// Is it ok if this is null?
+	
+	if (curr == tail) {
+	    tail = curr.getPrev();
+	}
+	
+	curr.getPrev().setNext(curr.getNext());
 	
 	//Check whether its the last item in the list:
 	if (curr.getNext() != null) {
